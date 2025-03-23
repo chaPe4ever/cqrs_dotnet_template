@@ -13,8 +13,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Database
-builder.Services.AddDbContext<UserDbContext>(options =>
-    options.UseInMemoryDatabase("UsersDb"));
+builder.Services.RegisterAllDbContexts();
 
 // MediatR with validation
 builder.Services.AddMediatR(cfg => {
@@ -38,8 +37,18 @@ if (app.Environment.IsDevelopment())
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<UserDbContext>();
-    context.Database.EnsureCreated();
+    
+    // Create all DbContexts automatically
+    var dbContextTypes = Assembly.GetExecutingAssembly()
+        .GetTypes()
+        .Where(t => t.IsClass && !t.IsAbstract && t.IsSubclassOf(typeof(DbContext)));
+        
+    foreach (var contextType in dbContextTypes)
+    {
+        // Get the context instance and ensure database is created
+        var context = services.GetService(contextType) as DbContext;
+        context?.Database.EnsureCreated();
+    }
 }
 
 // Endpoints

@@ -74,6 +74,7 @@ mkdir -p Features/Users/GetAll
 mkdir -p Features/Users/Update
 mkdir -p Features/Users/Delete
 mkdir -p Infrastructure/Persistence
+mkdir -p Infrastructure/Persistence/Extensions
 mkdir -p Common/Behaviors
 mkdir -p Common/Interfaces
 
@@ -87,6 +88,7 @@ cp "$SCRIPT_DIR/ValidationBehavior.cs" Common/Behaviors/ 2>/dev/null || echo "Wa
 # Infrastructure
 cp "$SCRIPT_DIR/User.cs" Infrastructure/Persistence/ 2>/dev/null || echo "Warning: User.cs not found"
 cp "$SCRIPT_DIR/UserDbContext.cs" Infrastructure/Persistence/ 2>/dev/null || echo "Warning: UserDbContext.cs not found"
+cp "$SCRIPT_DIR/DbContextRegistrationExtensions.cs" Infrastructure/Persistence/Extensions/ 2>/dev/null || echo "Warning: DbContextRegistrationExtensions.cs not found"
 
 # User features - Create
 cp "$SCRIPT_DIR/CreateUserCommand.cs" Features/Users/Create/ 2>/dev/null || echo "Warning: CreateUserCommand.cs not found"
